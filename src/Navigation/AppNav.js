@@ -6,8 +6,8 @@ import AuthStack from './AuthStack'
 const AppNav = () => {
   return (
     <>
-     {/* <AppStack/> */}
-     <AuthStack/>
+     <AppStack/>
+     {/* <AuthStack/> */}
     </>
   )
 }
