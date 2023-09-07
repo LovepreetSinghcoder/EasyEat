@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const SignupScreen = () => {
+const SignupScreen = ({navigation}) => {
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={'#FF3F00'} />
@@ -39,7 +39,7 @@ const SignupScreen = () => {
                     padding: 10,
                     elevation: 2
                 }} >
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                         <Text style={{
                             fontSize: 17,
                             fontWeight: '600',
