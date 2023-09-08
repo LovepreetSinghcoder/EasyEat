@@ -6,7 +6,7 @@ const Categories = () => {
         <View style={styles.container}>
             <Text style={styles.head}>Categories</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <TouchableOpacity style={[styles.box, {backgroundColor: '#ddfbf3'}]}>
+                <TouchableOpacity style={[styles.box, { backgroundColor: '#ddfbf3' }]}>
                     <Image source={require('../Images/icon_1.png')} style={styles.image} />
 
                     <Text style={styles.text}>Pizza</Text>
@@ -30,7 +30,7 @@ const Categories = () => {
                     <Text style={styles.text}>Drink</Text>
                 </TouchableOpacity>
 
-               
+
             </ScrollView>
         </View>
     )
@@ -44,18 +44,18 @@ const styles = StyleSheet.create({
         // backgroundColor: 'green',
         borderRadius: '10'
     },
-    head : {
-fontSize: 20,
-fontWeight: '600',
-margin: 10,
-paddingBottom: 5,
-paddingLeft: 5
+    head: {
+        fontSize: 20,
+        fontWeight: '600',
+        margin: 10,
+        paddingBottom: 5,
+        paddingLeft: 5
     },
     image: {
         width: 20,
         height: 20
     },
-    box : {
+    box: {
         // backgroundColor: 'red',
         flexDirection: 'row',
         marginHorizontal: 10,
@@ -66,8 +66,8 @@ paddingLeft: 5
         justifyContent: 'center',
         elevation: 2
     },
-    text : {
-       marginLeft: 5 ,
+    text: {
+        marginLeft: 5,
 
     }
 })

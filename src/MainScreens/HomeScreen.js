@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar'
 import Headerbar from '../Components/Headerbar'
 import { AntDesign } from '@expo/vector-icons';
 import Categories from '../Components/Categories';
+import OfferSlider from '../Components/OfferSlider';
 
 const HomeScreen = () => {
     return (
@@ -18,18 +19,13 @@ const HomeScreen = () => {
             </TouchableOpacity>
 
             <Categories />
-            {/* <View>
-                <Text>Categories</Text>
-                <View>
-                    <Text>All Categories</Text>
-                </View>
-            </View> */}
+            <OfferSlider />
 
-            <View>
+            {/* <View>
                 <Text>
                     Slider (Offers for user, advertisements)
                 </Text>
-            </View>
+            </View> */}
 
             <View>
                 <Text> foods</Text>
