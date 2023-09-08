@@ -5,6 +5,7 @@ import Headerbar from '../Components/Headerbar'
 import { AntDesign } from '@expo/vector-icons';
 import Categories from '../Components/Categories';
 import OfferSlider from '../Components/OfferSlider';
+import CardSlider from '../Components/CardSlider';
 
 const HomeScreen = () => {
     return (
@@ -27,9 +28,10 @@ const HomeScreen = () => {
                 </Text>
             </View> */}
 
-            <View>
+            <CardSlider />
+            {/* <View>
                 <Text> foods</Text>
-            </View>
+            </View> */}
         </View>
     )
 }

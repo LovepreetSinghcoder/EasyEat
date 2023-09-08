@@ -4,7 +4,7 @@ import React from 'react'
 const Categories = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.head}>Categories</Text>
+            {/* <Text style={styles.head}>Categories</Text> */}
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <TouchableOpacity style={[styles.box, { backgroundColor: '#ddfbf3' }]}>
                     <Image source={require('../Images/icon_1.png')} style={styles.image} />
