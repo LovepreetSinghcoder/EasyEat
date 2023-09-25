@@ -4,6 +4,7 @@ import React from 'react'
 const Categories = () => {
     return (
         <View style={styles.container}>
+             {/* Categories change  */}
             {/* <Text style={styles.head}>Categories</Text> */}
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <TouchableOpacity style={[styles.box, { backgroundColor: '#ddfbf3' }]}>
@@ -58,10 +59,10 @@ const styles = StyleSheet.create({
     box: {
         // backgroundColor: 'red',
         flexDirection: 'row',
-        marginHorizontal: 10,
-        marginBottom: 10,
+        marginLeft: 10, //horizontal
+        marginBottom: 15, //10
         padding: 10,
-        borderRadius: 20,
+        borderRadius: 18, //20
         alignItems: 'center',
         justifyContent: 'center',
         elevation: 2

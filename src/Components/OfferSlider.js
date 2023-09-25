@@ -18,6 +18,8 @@ const OfferSlider = () => {
                 // prevButton={<MaterialIcons name="arrow-left" size={24} color="black" />}
                 nextButton={<Text style={styles.nextButton}>›</Text>}
                 prevButton={<Text style={styles.nextButton}>‹</Text>}
+                // nextButton={<Text style={styles.buttonText}>›</Text>}
+                // prevButton={<Text style={styles.buttonText}>‹</Text>}
 
             >
                 <View style={styles.slide}>
@@ -41,7 +43,7 @@ export default OfferSlider
 
 const styles = StyleSheet.create({
     container: {
-        width: '98%',
+        width: '95%',
         height: 150,
         alignSelf: 'center'
         // backgroundColor: 'red',
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%',
-        borderRadius: 20
+        borderRadius: 25 //18
     },
     slide : {
         width: '100%',
@@ -59,6 +61,7 @@ const styles = StyleSheet.create({
         alignContent: 'center'
     },
     nextButton : {
+        color : 'black',
        fontSize: 20,
        fontWeight: '600',
        backgroundColor: 'white',

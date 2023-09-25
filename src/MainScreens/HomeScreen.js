@@ -7,7 +7,7 @@ import Categories from '../Components/Categories';
 import OfferSlider from '../Components/OfferSlider';
 import CardSlider from '../Components/CardSlider';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation}) => {
     return (
         <View style={styles.mainContainer}>
             <StatusBar backgroundColor={'#FF3F00'} />
@@ -22,16 +22,10 @@ const HomeScreen = () => {
             <Categories />
             <OfferSlider />
 
-            {/* <View>
-                <Text>
-                    Slider (Offers for user, advertisements)
-                </Text>
-            </View> */}
 
-            <CardSlider />
-            {/* <View>
-                <Text> foods</Text>
-            </View> */}
+
+            <CardSlider navigation={navigation} />
+
         </View>
     )
 }
@@ -46,12 +40,12 @@ const styles = StyleSheet.create({
     },
     searchbox: {
         flexDirection: 'row',
-        width: '92%',
+        width: '95%',
         backgroundColor: 'white',
         alignItems: 'center',
         padding: 10,
         marginVertical: 10,
-        borderRadius: 20,
+        borderRadius: 20, //30
         alignSelf: 'center',
         elevation: 2
     },

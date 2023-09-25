@@ -1,7 +1,7 @@
 import { StyleSheet, Text, Touchable, TouchableOpacity, View, Image, ScrollView } from 'react-native'
 import React from 'react'
 
-const CardSlider = () => {
+const CardSlider = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.cardouthead}>
@@ -10,7 +10,7 @@ const CardSlider = () => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
 
 
-                <TouchableOpacity style={styles.card}>
+                <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ProductScreen')}>
                     <View>
                         <Image source={require('../Images/pizza2.jpg')} style={styles.cardimage} />
                     </View>
@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
     cardimage: {
         width: '100%',
         height: 150,
-        borderTopLeftRadius: 17,
-        borderTopRightRadius: 17
+        borderTopLeftRadius: 21,
+        borderTopRightRadius: 21 //17
 
     },
     card: {
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         height: 200,
         marginLeft: 10,
         marginTop: 10,
-        borderRadius: 18,
+        borderRadius: 22, //18
         borderWidth: 1,
         borderColor: 'grey',
 
