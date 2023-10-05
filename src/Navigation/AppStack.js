@@ -6,6 +6,7 @@ import HomeScreen from '../MainScreens/HomeScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import ProductScreen from '../MainScreens/ProductScreen';
+import UserCartScreen from '../MainScreens/UserCartScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,6 +42,9 @@ const AppStack = () => {
           else if (route.name === 'Settings') {
             iconName = 'settings';
           }
+          else if (route.name === 'Cart') {
+            iconName = 'md-cart';
+          }
           return <Ionicons name={iconName} size={size} color={color} />
         },
         tabBarLabelStyle: styles.tabBarLabel
@@ -48,6 +52,7 @@ const AppStack = () => {
       >
         <Tab.Screen name="Home" component={HomeStack} options={{ headerShown: false }} />
         <Tab.Screen name="Profile" component={HomeStack} options={{ headerShown: false }} />
+        <Tab.Screen name="Cart" component={UserCartScreen} options={{ headerShown: false }} />
         <Tab.Screen name="Settings" component={HomeStack} options={{ headerShown: false }} />
 
       </Tab.Navigator>
