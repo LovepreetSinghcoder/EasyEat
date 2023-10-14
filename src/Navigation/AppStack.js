@@ -7,6 +7,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import ProductScreen from '../MainScreens/ProductScreen';
 import UserCartScreen from '../MainScreens/UserCartScreen';
+import TrackOrderScreen from '../MainScreens/TrackOrderScreen';
+import UserProfile from '../MainScreens/UserProfile';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,33 +28,37 @@ const HomeStack = () => (
 const AppStack = () => {
   return (
     <NavigationContainer>
-    
-      <Tab.Navigator
-      screenOptions={({ route}) => ({
-        tabBarStyle: styles.tabBar,
-        tabBarIcon: ({ color, size}) => {
-          let iconName;
 
-          if (route.name === 'Home') {
-            iconName = 'home';
-          }
-          else if (route.name === 'Profile') {
-            iconName = 'person';
-          }
-          else if (route.name === 'Settings') {
-            iconName = 'settings';
-          }
-          else if (route.name === 'Cart') {
-            iconName = 'md-cart';
-          }
-          return <Ionicons name={iconName} size={size} color={color} />
-        },
-        tabBarLabelStyle: styles.tabBarLabel
-      })}
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarStyle: styles.tabBar,
+          tabBarIcon: ({ color, size }) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = 'home';
+            }
+            else if (route.name === 'Profile') {
+              iconName = 'person';
+            }
+            else if (route.name === 'Settings') {
+              iconName = 'settings';
+            }
+            else if (route.name === 'Cart') {
+              iconName = 'md-cart';
+            }
+            else if (route.name === 'TrackOrders') {
+              iconName = 'map';
+            }
+            return <Ionicons name={iconName} size={size} color={color} />
+          },
+          tabBarLabelStyle: styles.tabBarLabel
+        })}
       >
         <Tab.Screen name="Home" component={HomeStack} options={{ headerShown: false }} />
-        <Tab.Screen name="Profile" component={HomeStack} options={{ headerShown: false }} />
         <Tab.Screen name="Cart" component={UserCartScreen} options={{ headerShown: false }} />
+        <Tab.Screen name="Profile" component={UserProfile} options={{ headerShown: false }} />
+        <Tab.Screen name="TrackOrders" component={TrackOrderScreen} options={{ headerShown: false }} />
         <Tab.Screen name="Settings" component={HomeStack} options={{ headerShown: false }} />
 
       </Tab.Navigator>
@@ -63,13 +69,13 @@ const AppStack = () => {
 export default AppStack
 
 const styles = StyleSheet.create({
-  tabBar :{
+  tabBar: {
     height: 55,
     backgroundColor: 'white',
     borderTopWidth: 1,
     borderColor: 'grey'
   },
-  tabBarLabel  :{
+  tabBarLabel: {
     paddingBottom: 5
   }
 })
