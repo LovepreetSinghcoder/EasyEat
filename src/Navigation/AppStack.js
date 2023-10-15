@@ -9,6 +9,7 @@ import ProductScreen from '../MainScreens/ProductScreen';
 import UserCartScreen from '../MainScreens/UserCartScreen';
 import TrackOrderScreen from '../MainScreens/TrackOrderScreen';
 import UserProfile from '../MainScreens/UserProfile';
+import AccountAndSettings from '../MainScreens/AccountAndSettings';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -59,7 +60,7 @@ const AppStack = () => {
         <Tab.Screen name="Cart" component={UserCartScreen} options={{ headerShown: false }} />
         <Tab.Screen name="Profile" component={UserProfile} options={{ headerShown: false }} />
         <Tab.Screen name="TrackOrders" component={TrackOrderScreen} options={{ headerShown: false }} />
-        <Tab.Screen name="Settings" component={HomeStack} options={{ headerShown: false }} />
+        <Tab.Screen name="Settings" component={AccountAndSettings} options={{ headerShown: false }} />
 
       </Tab.Navigator>
     </NavigationContainer>
