@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FF3F00"
-      }
+      },
+      "package": "in.easyeat"
     },
     "web": {
       "favicon": "./assets/favicon.png"

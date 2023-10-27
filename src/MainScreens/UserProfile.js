@@ -1,14 +1,46 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+// import { ReactNativeFirebase } from '@react-native-firebase/app';
+import { firebase } from '../Firebase/FirebaseConfig'
+
 
 
 const UserProfile = () => {
+
+    const handleData = async () => {
+        // const docref = firebase.firestore().collection('UserProfiles')
+        const docref = firebase.firestore().collection('UserProfiles');
+        const doc1 = await docref.get();
+
+        // if (!doc.empty) {
+        //     console.log('ok Done 1')
+           
+
+        // }
+        if (!doc1.empty) {
+            doc1.forEach((doc) => {
+                const data = doc.data();
+                console.log('ok Done 1', data);
+                // You can access the fields in 'data' now.
+            });
+        } else {
+            console.log('No documents found.');
+        }
+        
+       
+    }
+
+    useEffect(() => {
+        handleData()
+    }, [])
+
+
     return (
         <View style={styles.container}>
             <View style={{ backgroundColor: '#FF3F00', paddingVertical: 15, paddingHorizontal: 15, marginTop: 30 }}>
-                <Text style={{color: 'white'}}>My Profile</Text>
+                <Text style={{ color: 'white' }}>My Profile</Text>
             </View>
 
 
