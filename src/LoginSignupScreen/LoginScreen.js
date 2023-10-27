@@ -1,7 +1,27 @@
 import { StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import { FontAwesome } from '@expo/vector-icons';
+import { firebase } from '../Firebase/FirebaseConfig'
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+
+    const LoginHandler = async () => {
+        if (email !== '' && password !== '') {
+            try {
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        var user = userCredential.user.uid;
+                        console.log('Uid of the User', user)
+                    })
+            } catch (error) {
+                console.log('error....')
+            }
+        }
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={'#FF3F00'} />
@@ -9,16 +29,27 @@ const LoginScreen = ({navigation}) => {
                 <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: '700', }} >Login</Text>
             </View>
 
-            <TextInput
-                placeholder='Email'
-                keyboardType='email-address'
-                style={styles.input}
-            />
-            <TextInput
-                placeholder='Password'
-                style={styles.input}
-            />
-            <TouchableOpacity style={styles.loginbutton} onPress={() => alert('Login Successfull!')}>
+            <View style={styles.inputCont}>
+                <FontAwesome name="user" size={24} color="grey" style={styles.icon} />
+                <TextInput
+                    placeholder='Email'
+                    keyboardType='email-address'
+                    style={styles.input}
+                    value={email}
+                    onChangeText={setEmail}
+                />
+            </View>
+
+            <View style={styles.inputCont}>
+                <FontAwesome name="lock" size={24} color="grey" style={styles.icon} />
+                <TextInput
+                    placeholder='Password'
+                    style={styles.input}
+                    value={password}
+                    onChangeText={setPassword}
+                />
+            </View>
+            <TouchableOpacity style={styles.loginbutton} onPress={() => LoginHandler()}>
                 <Text style={styles.loginbuttonTxt}>Login</Text>
             </TouchableOpacity>
 
@@ -59,7 +90,8 @@ const styles = StyleSheet.create({
         // backgroundColor: 'green',
         width: '100%'
     },
-    input: {
+    inputCont: {
+        flexDirection: 'row',
         padding: 10,
         borderColor: 'grey',
         borderWidth: 1,
@@ -67,6 +99,16 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         width: '95%',
         alignSelf: 'center'
+    },
+    icon: {
+        paddingHorizontal: 5
+    },
+    input: {
+        paddingLeft: 5,
+        width: '90%',
+    
+        // backgroundColor: 'green'
+
     },
     loginbutton: {
         backgroundColor: '#FF3F00',
