@@ -1,7 +1,32 @@
 import { StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import { FontAwesome } from '@expo/vector-icons';
+import { firebase } from "../Firebase/FirebaseConfig";
 
-const SignupScreen = ({navigation}) => {
+
+const SignupScreen = ({ navigation }) => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [cpassword, setCPassword] = useState('')
+
+
+
+    const createAccountHandler = async () => {
+        // if (!email || !password || cpassword) {
+        //     alert('Please fill the Fields!')
+        //     return;
+        // }
+
+        try {
+            await firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredentials) => {
+                    const uid = userCredentials?.user.uid;
+                    console.log('Account Created Succesfully.')
+                })
+        } catch (error) {
+            console.log('somthing Error...')
+        }
+    }
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={'#FF3F00'} />
@@ -9,21 +34,39 @@ const SignupScreen = ({navigation}) => {
                 <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: '700', }} >Sign up</Text>
             </View>
 
-            <TextInput
-                placeholder='Email'
-                keyboardType='email-address'
-                style={styles.input}
-            />
-            <TextInput
-                placeholder='Password'
-                style={styles.input}
-            />
-            <TextInput
-                placeholder='Confirm Password'
-                style={styles.input}
-            />
+            <View style={styles.inputCont}>
+                <FontAwesome name="user" size={24} color="grey" style={styles.icon} />
 
-            <TouchableOpacity style={styles.loginbutton} onPress={() => alert('Account created Successfull!')}>
+
+                <TextInput
+                    placeholder='Email'
+                    keyboardType='email-address'
+                    style={styles.input}
+                    value={email}
+                    onChangeText={setEmail}
+                />
+            </View>
+            <View style={styles.inputCont}>
+                <FontAwesome name="lock" size={24} color="grey" style={styles.icon} />
+
+                <TextInput
+                    placeholder='Password'
+                    style={styles.input}
+                    value={password}
+                    onChangeText={setPassword}
+                />
+            </View>
+            <View style={styles.inputCont}>
+                <FontAwesome name="lock" size={24} color="grey" style={styles.icon} />
+
+                <TextInput
+                    placeholder='Confirm Password'
+                    style={styles.input}
+                    value={cpassword}
+                    onChangeText={setCPassword}
+                />
+            </View>
+            <TouchableOpacity style={styles.loginbutton} onPress={() => createAccountHandler()}>
                 <Text style={styles.loginbuttonTxt}>Sign up</Text>
             </TouchableOpacity>
 
@@ -65,7 +108,8 @@ const styles = StyleSheet.create({
         // backgroundColor: 'green',
         width: '100%'
     },
-    input: {
+    inputCont: {
+        flexDirection: 'row',
         padding: 10,
         borderColor: 'grey',
         borderWidth: 1,
@@ -73,6 +117,13 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         width: '95%',
         alignSelf: 'center'
+    },
+    icon: {
+        paddingHorizontal: 5
+    },
+    input: {
+        paddingLeft: 5,
+        width: '90%'
     },
     loginbutton: {
         backgroundColor: '#FF3F00',
