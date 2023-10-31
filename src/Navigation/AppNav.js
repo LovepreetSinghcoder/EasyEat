@@ -1,13 +1,23 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import AppStack from './AppStack'
 import AuthStack from './AuthStack'
+import { AuthContext } from '../Context/AuthContext'
 
 const AppNav = () => {
+  const { userloggeduid, checkIsLogged } = useContext(AuthContext);
+
+  useEffect(() => {
+    checkIsLogged()
+  }, [])
+  console.log('From AppNav (UID)', userloggeduid)
   return (
     <>
-     {/* <AppStack/> */}
-     <AuthStack/>
+      {userloggeduid ?
+        <AppStack />
+        :
+        <AuthStack />
+      }
     </>
   )
 }

@@ -11,8 +11,6 @@ const firebaseConfig = {
 
   // Add Firebase Config Here
 
-  };
-
 //Intialize Firebase
 
 if (!firebase.apps.length) {

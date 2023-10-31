@@ -1,9 +1,12 @@
 import { StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FontAwesome } from '@expo/vector-icons';
 import { firebase } from '../Firebase/FirebaseConfig'
+import { AuthContext } from '../Context/AuthContext';
 
 const LoginScreen = ({ navigation }) => {
+  const { userloggeduidHandler } = useContext(AuthContext);
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -14,7 +17,8 @@ const LoginScreen = ({ navigation }) => {
                 firebase.auth().signInWithEmailAndPassword(email, password)
                     .then((userCredential) => {
                         var user = userCredential.user.uid;
-                        console.log('Uid of the User', user)
+                        userloggeduidHandler(user);
+                        console.log('From LoginScreen (UID)', user)
                     })
             } catch (error) {
                 console.log('error....')

@@ -1,10 +1,13 @@
 import { StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FontAwesome } from '@expo/vector-icons';
 import { firebase } from "../Firebase/FirebaseConfig";
+import { AuthContext } from '../Context/AuthContext';
 
 
 const SignupScreen = ({ navigation }) => {
+  const { userloggeduidHandler } = useContext(AuthContext);
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [cpassword, setCPassword] = useState('')
@@ -21,6 +24,7 @@ const SignupScreen = ({ navigation }) => {
             await firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then((userCredentials) => {
                     const uid = userCredentials?.user.uid;
+                    userloggeduidHandler(uid)
                     console.log('Account Created Succesfully.')
                 })
         } catch (error) {
