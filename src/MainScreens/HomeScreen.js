@@ -1,13 +1,27 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import Headerbar from '../Components/Headerbar'
 import { AntDesign } from '@expo/vector-icons';
 import Categories from '../Components/Categories';
 import OfferSlider from '../Components/OfferSlider';
 import CardSlider from '../Components/CardSlider';
+import { firebase } from '../Firebase/FirebaseConfig'
 
-const HomeScreen = ({ navigation}) => {
+const HomeScreen = ({ navigation }) => {
+
+
+    const [foodData, setFoodData] = useState([])
+
+    const foodDataQry = firebase.firestore().collection('FoodData')
+
+    useEffect(() => {
+        foodDataQry.onSnapshot(snapshot => {
+            setFoodData(snapshot.docs.map(doc => doc.data()))
+        })
+    }, [])
+
+    // console.log('ye hai food Data', foodData)
     return (
         <View style={styles.mainContainer}>
             <StatusBar backgroundColor={'#FF3F00'} />
@@ -24,7 +38,7 @@ const HomeScreen = ({ navigation}) => {
 
 
 
-            <CardSlider navigation={navigation} />
+            <CardSlider navigation={navigation} data={foodData}/>
 
         </View>
     )

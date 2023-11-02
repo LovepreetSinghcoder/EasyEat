@@ -10,6 +10,7 @@ import "firebase/compat/firestore";
 const firebaseConfig = {
 
   // Add Firebase Config Here
+ 
 
 //Intialize Firebase
 

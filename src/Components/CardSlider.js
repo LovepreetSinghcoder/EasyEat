@@ -1,36 +1,57 @@
-import { StyleSheet, Text, Touchable, TouchableOpacity, View, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, Touchable, TouchableOpacity, View, Image, ScrollView, FlatList, SafeAreaView } from 'react-native'
 import React from 'react'
 
-const CardSlider = ({ navigation }) => {
+const CardSlider = ({ navigation, data }) => {
+
+    // console.log('Ye hai Cardslider ka Console', data)
     return (
         <View style={styles.container}>
             <Text style={styles.cardouthead}>
                 Today's Special Food
             </Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}> */}
 
 
-                <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ProductScreen')}>
-                    <View>
-                        <Image source={require('../Images/pizza2.jpg')} style={styles.cardimage} />
-                    </View>
 
-                    <View style={styles.cardin1}>
-                        <Text style={styles.cardin1txt}>Pizza</Text>
 
-                        <View style={styles.cardin2}>
-                            <Text style={styles.cardin2txt1}>Fast Food</Text>
-                            <Text style={styles.cardin2txt1}>Price -
-                                <Text style={{ textDecorationLine: 'line-through' }}>100Rs </Text>
 
-                                <Text> 90Rs</Text>
-                            </Text>
-                            <Text style={styles.cardin2txt3}>VEG</Text>
-                        </View>
-                    </View>
-                </TouchableOpacity>
+            <SafeAreaView>
 
-                <TouchableOpacity style={styles.card}>
+                <FlatList style={styles.flatliststyle}
+                showsHorizontalScrollIndicator={false}
+                    horizontal
+                    data={data}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity key={item.index} style={styles.card} onPress={() => navigation.navigate('ProductScreen')}>
+                            <View>
+                                <Image source={{uri: item.FoodImageUrl}} style={styles.cardimage} />
+                            </View>
+
+                            <View style={styles.cardin1}>
+                                <Text style={styles.cardin1txt}>{item.FoodName}</Text>
+
+                                <View style={styles.cardin2}>
+                                    <Text style={styles.cardin2txt1}>Fast Food</Text>
+                                    <Text style={styles.cardin2txt1}>Price -
+                                        <Text style={{ textDecorationLine: 'line-through' }}> Rs </Text>
+
+                                        <Text> {item.FoodPrice}Rs</Text>
+                                    </Text>
+                                    <Text style={styles.cardin2txt3}>VEG</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                />
+            </SafeAreaView>
+
+
+
+
+
+
+
+            {/* <TouchableOpacity style={styles.card}>
                     <View>
                         <Image source={require('../Images/pizza1.jpg')} style={styles.cardimage} />
                     </View>
@@ -68,8 +89,8 @@ const CardSlider = ({ navigation }) => {
                             <Text style={styles.cardin2txt3}>VEG</Text>
                         </View>
                     </View>
-                </TouchableOpacity>
-            </ScrollView>
+                </TouchableOpacity> */}
+            {/* </ScrollView> */}
         </View>
     )
 }
@@ -78,29 +99,34 @@ export default CardSlider
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 10
+        marginVertical: 10,
+        // backgroundColor: 'green',
+        paddingHorizontal: 5
     },
     cardouthead: {
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: '600',
         marginHorizontal: 10,
-        paddingLeft: 5
+        paddingLeft: 5,
+        color: '#424242'
     },
     cardimage: {
         width: '100%',
         height: 150,
-        borderTopLeftRadius: 21,
-        borderTopRightRadius: 21 //17
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16 //17
 
     },
     card: {
         width: 300,
         height: 200,
-        marginLeft: 10,
+        marginLeft: 5,
         marginTop: 10,
-        borderRadius: 22, //18
-        borderWidth: 1,
-        borderColor: 'grey',
+        borderRadius: 17, //18
+        backgroundColor: '#dedede',
+        // borderWidth: 1,
+        // borderColor: 'grey',
+        // elevation: 2
 
     },
     cardin1: {
