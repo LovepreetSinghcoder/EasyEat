@@ -29,6 +29,7 @@ const ProductScreen = ({ navigation, route }) => {
             FoodQuantity: parseInt(quantity, 10),
             userid: userloggeduid,
             cartItemId: date + userloggeduid
+            
         }
 
         try {

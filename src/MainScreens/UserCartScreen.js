@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Image, FlatList, ScrollView }
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../Context/AuthContext'
 import { firebase } from '../Firebase/FirebaseConfig'
+import { useFocusEffect } from '@react-navigation/native'
 
 const UserCartScreen = ({ navigation }) => {
     const { userloggeduid } = useContext(AuthContext)
@@ -9,6 +10,12 @@ const UserCartScreen = ({ navigation }) => {
     const [cartdata, setCartdata] = useState(null)
     const [cartAlldata, setCartAlldata] = useState(null)
     const [foodDataAll, setFoodDataAll] = useState([])
+    const [ItemCost, setItemCost] = useState('0')
+    const [totalCost, setTotalCost] = useState('0')
+    const [deliveryCharges, setDeliveryCharges] = useState('0')
+
+
+
 
 
 
@@ -35,6 +42,14 @@ const UserCartScreen = ({ navigation }) => {
     useEffect(() => {
         cardDataHandler()
     }, [])
+
+    useFocusEffect(
+        React.useCallback(() => {
+            cardDataHandler();
+            TotalPriceHandler()
+            console.log('triggered cart')
+        }, [])
+    );
 
     const FoodDataHandler = async () => {
 
@@ -80,7 +95,32 @@ const UserCartScreen = ({ navigation }) => {
 
     }
 
-    // console.log('Ye hai Data bro', foodDataAll)
+
+    const TotalPriceHandler = () => {
+        if (cartdata !== null && Object.keys(cartdata).length !== 0) {
+
+            const cartDataforTotalPrice = cartAlldata;
+            let totalfoodprice = 0;
+
+            // const foodprice = cartDataforTotalPrice.cartItems
+            cartDataforTotalPrice.forEach((item) => {
+                totalfoodprice += (parseInt(item.totalFoodPrice))
+            })
+
+            setItemCost(totalfoodprice.toString())
+            setTotalCost(totalfoodprice.toString())
+
+
+
+
+
+        }
+    }
+
+    useEffect(() => {
+        TotalPriceHandler()
+    }, [])
+    console.log('Ye hai Data bro', ItemCost, totalCost, )
 
     return (
         <View style={styles.mainContainer}>
@@ -148,6 +188,52 @@ const UserCartScreen = ({ navigation }) => {
 
 
                     </View>
+
+
+                    {totalCost && totalCost !== '0' ?
+                        <>
+                            <View style={{ marginTop: 10 }}>
+                                <View style={{
+                                    backgroundColor: 'white',
+                                    borderColor: 'grey',
+                                    borderRadius: 15,
+                                    width: '95%',
+                                    alignSelf: 'center',
+                                    marginVertical: 5,
+                                    paddingVertical: 5,
+                                    elevation: 3
+                                }}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '95%', alignSelf: 'center' }}>
+                                        <Text style={{ fontWeight: '600' }}>Item Cost:</Text>
+                                        <Text style={{ fontWeight: '600' }}>{ItemCost}₹</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '95%', alignSelf: 'center' }}>
+                                        <Text style={{ fontWeight: '600' }}>Delivery Charges:</Text>
+                                        <Text>{deliveryCharges}₹</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '95%', alignSelf: 'center' }}>
+                                        <Text style={{ fontWeight: '500' }}>Service Charges:</Text>
+                                        <Text>0₹</Text>
+                                    </View>
+
+                                </View>
+                            </View>
+
+                            <View style={styles.btnCont}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ fontSize: 20, fontWeight: '600' }}>Total:</Text>
+                                    <Text style={{ fontSize: 20, fontWeight: '600', paddingLeft: 5 }}>{totalCost}₹</Text>
+                                </View>
+                                <TouchableOpacity style={{backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20}}>
+                                    <Text style={{fontSize: 17, fontWeight: '500', color: 'white'}}>Place Order</Text>
+                                </TouchableOpacity>
+
+                            </View>
+                        </>
+                        :
+                        null
+                    }
+
                 </ScrollView>
 
 
@@ -237,6 +323,16 @@ const styles = StyleSheet.create({
     containerCard_in3_btn_txt: {
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    btnCont: {
+        width: '100%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 0,
+        flexDirection: 'row',
+        marginBottom: 80,
+        paddingTop: 10,
+        paddingHorizontal: 15,
     }
 
 })
