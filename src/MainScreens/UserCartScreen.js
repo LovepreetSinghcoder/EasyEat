@@ -52,6 +52,34 @@ const UserCartScreen = ({ navigation }) => {
         FoodDataHandler()
     }, [])
 
+
+    const DeleteButtonhandler = async (item) => {
+
+        console.log('ye hai 1')
+        const docref = firebase.firestore().collection('UserCart').doc(userloggeduid);
+
+        const docSnapshot = await docref.get();
+        const cartData = docSnapshot.data();
+
+        if (cartData && cartData.cartItems && cartData.cartItems.length === 1) {
+            await docref.update({
+                cartItems: firebase.firestore.FieldValue.delete()
+            })
+            console.log('ye hai 2')
+
+        }
+        else {
+            await docref.update({
+                cartItems: firebase.firestore.FieldValue.arrayRemove(item)
+            })
+            console.log('ye hai 3')
+
+        }
+        cardDataHandler()
+
+
+    }
+
     // console.log('Ye hai Data bro', foodDataAll)
 
     return (
@@ -75,7 +103,7 @@ const UserCartScreen = ({ navigation }) => {
                     <View style={styles.cartout}>
                         {
                             cartAlldata === null ?
-                                <Text>Your Cart is Empty!</Text>
+                                <Text style={{ marginHorizontal: 16, fontSize: 17, color: 'grey' }}>Your Cart is Empty!</Text>
 
 
                                 :
@@ -89,7 +117,7 @@ const UserCartScreen = ({ navigation }) => {
                                             return (
                                                 <View style={styles.containerCardList}>
                                                     <View style={styles.containerCard}>
-                                                        <Image source={{uri: nData[0].FoodImageUrl}} style={styles.cardimage} />
+                                                        <Image source={{ uri: nData[0].FoodImageUrl }} style={styles.cardimage} />
                                                         <View style={styles.containerCard_in}>
                                                             <View style={styles.containerCard_in1}>
                                                                 <Text >Mera Dhabha</Text>
@@ -103,7 +131,7 @@ const UserCartScreen = ({ navigation }) => {
                                                             </View>
 
                                                             <View style={styles.containerCard_in3}>
-                                                                <TouchableOpacity style={styles.containerCard_in3_btn}>
+                                                                <TouchableOpacity style={styles.containerCard_in3_btn} onPress={() => { DeleteButtonhandler(item) }}>
                                                                     <Text style={styles.containerCard_in3_btn_txt}>Delete</Text>
                                                                 </TouchableOpacity>
                                                             </View>
