@@ -4,27 +4,25 @@ import React from 'react'
 const CardSlider = ({ navigation, data }) => {
 
     // console.log('Ye hai Cardslider ka Console', data)
+
+    const openProductHandler = (item) => {
+        navigation.navigate('ProductScreen', item)
+    }
     return (
         <View style={styles.container}>
             <Text style={styles.cardouthead}>
                 Today's Special Food
             </Text>
-            {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}> */}
-
-
-
-
-
             <SafeAreaView>
 
                 <FlatList style={styles.flatliststyle}
-                showsHorizontalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
                     horizontal
                     data={data}
                     renderItem={({ item }) => (
-                        <TouchableOpacity key={item.index} style={styles.card} onPress={() => navigation.navigate('ProductScreen')}>
+                        <TouchableOpacity key={item.index} style={styles.card} onPress={() => { openProductHandler(item) }}>
                             <View>
-                                <Image source={{uri: item.FoodImageUrl}} style={styles.cardimage} />
+                                <Image source={{ uri: item.FoodImageUrl }} style={styles.cardimage} />
                             </View>
 
                             <View style={styles.cardin1}>
@@ -45,52 +43,6 @@ const CardSlider = ({ navigation, data }) => {
                 />
             </SafeAreaView>
 
-
-
-
-
-
-
-            {/* <TouchableOpacity style={styles.card}>
-                    <View>
-                        <Image source={require('../Images/pizza1.jpg')} style={styles.cardimage} />
-                    </View>
-
-                    <View style={styles.cardin1}>
-                        <Text style={styles.cardin1txt}>Pizza</Text>
-
-                        <View style={styles.cardin2}>
-                            <Text style={styles.cardin2txt1}>Fast Food</Text>
-                            <Text style={styles.cardin2txt1}>Price -
-                                <Text style={{ textDecorationLine: 'line-through' }}>150Rs </Text>
-
-                                <Text> 100Rs</Text>
-                            </Text>
-                            <Text style={styles.cardin2txt3}>VEG</Text>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.card}>
-                    <View>
-                        <Image source={require('../Images/pizza3.jpg')} style={styles.cardimage} />
-                    </View>
-
-                    <View style={styles.cardin1}>
-                        <Text style={styles.cardin1txt}>Pizza</Text>
-
-                        <View style={styles.cardin2}>
-                            <Text style={styles.cardin2txt1}>Fast Food</Text>
-                            <Text style={styles.cardin2txt1}>Price -
-                                <Text style={{ textDecorationLine: 'line-through' }}>200Rs </Text>
-
-                                <Text> 180Rs</Text>
-                            </Text>
-                            <Text style={styles.cardin2txt3}>VEG</Text>
-                        </View>
-                    </View>
-                </TouchableOpacity> */}
-            {/* </ScrollView> */}
         </View>
     )
 }
