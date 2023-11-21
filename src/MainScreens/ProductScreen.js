@@ -28,8 +28,8 @@ const ProductScreen = ({ navigation, route }) => {
             item_id: data.id,
             FoodQuantity: parseInt(quantity, 10),
             userid: userloggeduid,
-            cartItemId: date + userloggeduid
-            
+            cartItemId: date + userloggeduid,
+            totalFoodPrice: parseInt(data.FoodPrice) * parseInt(quantity), 
         }
 
         try {

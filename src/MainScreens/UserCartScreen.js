@@ -43,36 +43,49 @@ const UserCartScreen = ({ navigation }) => {
         cardDataHandler()
     }, [])
 
-    useFocusEffect(
-        React.useCallback(() => {
-            cardDataHandler();
-            TotalPriceHandler()
-            console.log('triggered cart')
-        }, [])
-    );
-
+    
     const FoodDataHandler = async () => {
 
-
+        
         const foodRef = firebase.firestore().collection('FoodData');
-
+        
         foodRef.onSnapshot(snapshot => {
             setFoodDataAll(snapshot.docs.map(doc => doc.data()))
         }
         )
-
+        
     }
 
     useEffect(() => {
         FoodDataHandler()
     }, [])
-
-
+    
+    const TotalPriceHandler = () => {
+        if (cartdata !== null && Object.keys(cartdata).length !== 0) {
+            
+            const cartDataforTotalPrice = cartAlldata;
+            let totalfoodprice = 0;
+            
+            // const foodprice = cartDataforTotalPrice.cartItems
+            cartDataforTotalPrice.forEach((item) => {
+                totalfoodprice += (parseInt(item.totalFoodPrice))
+            })
+            
+            setItemCost(totalfoodprice.toString())
+            setTotalCost(totalfoodprice.toString())
+            
+        }
+    }
+    
+    useEffect(() => {
+        TotalPriceHandler()
+    }, [cartAlldata])
+    
     const DeleteButtonhandler = async (item) => {
-
+        
         console.log('ye hai 1')
         const docref = firebase.firestore().collection('UserCart').doc(userloggeduid);
-
+        
         const docSnapshot = await docref.get();
         const cartData = docSnapshot.data();
 
@@ -81,47 +94,30 @@ const UserCartScreen = ({ navigation }) => {
                 cartItems: firebase.firestore.FieldValue.delete()
             })
             console.log('ye hai 2')
-
+            
         }
         else {
             await docref.update({
                 cartItems: firebase.firestore.FieldValue.arrayRemove(item)
             })
             console.log('ye hai 3')
-
+            
         }
         cardDataHandler()
-
-
+        
+        
     }
-
-
-    const TotalPriceHandler = () => {
-        if (cartdata !== null && Object.keys(cartdata).length !== 0) {
-
-            const cartDataforTotalPrice = cartAlldata;
-            let totalfoodprice = 0;
-
-            // const foodprice = cartDataforTotalPrice.cartItems
-            cartDataforTotalPrice.forEach((item) => {
-                totalfoodprice += (parseInt(item.totalFoodPrice))
-            })
-
-            setItemCost(totalfoodprice.toString())
-            setTotalCost(totalfoodprice.toString())
-
-
-
-
-
-        }
-    }
-
-    useEffect(() => {
-        TotalPriceHandler()
-    }, [])
-    console.log('Ye hai Data bro', ItemCost, totalCost, )
-
+    
+    
+    console.log('Ye hai Data braso', ItemCost, totalCost, )
+    
+    useFocusEffect(
+        React.useCallback(() => {
+            cardDataHandler();
+            TotalPriceHandler()
+            console.log('triggered cart')
+        }, [])
+    );
     return (
         <View style={styles.mainContainer}>
             <View style={{ backgroundColor: '#FF3F00', paddingVertical: 15, paddingHorizontal: 15, marginTop: 30 }}>
