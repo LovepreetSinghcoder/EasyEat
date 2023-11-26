@@ -109,7 +109,75 @@ const UserCartScreen = ({ navigation }) => {
     }
 
 
-    console.log('Ye hai Data braso', ItemCost, totalCost,)
+    // console.log('Ye hai Data braso', ItemCost, totalCost,)
+
+    const deleteCart = async () => {
+        const docRef = firebase.firestore().collection('UserCart').doc(userloggeduid);
+
+        const docSnapshot = await docRef.get();
+
+        if (docSnapshot.exists) {
+            await docRef.delete();
+            console.log('Document successfully deleted.');
+        } else {
+            console.log('Document does not exist.');
+        }
+    };
+
+    const [updatedCartData, setUpdatedCartData] = useState(null);
+
+    const addingSomedata = (docid, date) => {
+        if (cartdata !== null) {
+
+            const updatedData = { ...cartdata };
+
+
+            updatedData.cartItems.forEach((item) => {
+                item.orderId = docid;
+                item.orderDate = date;
+            });
+
+            // console.log('Updated cart data:', updatedData);
+
+            setUpdatedCartData(updatedData);
+        }
+
+    }
+
+    const PlaceNow = async () => {
+
+        console.log('ye ho gya bhai')
+        const cDate = new Date().getTime().toString()
+        const docid = new Date().getTime().toString() + userloggeduid;
+
+        const orderdatadoc = firebase.firestore().collection('UserOrders').doc(docid)
+        const orderitemstabledoc = firebase.firestore().collection('OrderItems').doc(docid)
+
+
+        await addingSomedata(docid, cDate);
+
+        if (updatedCartData !== null) {
+            try {
+                await orderitemstabledoc.set({ ...updatedCartData });
+                await orderdatadoc.set({
+                    orderid: docid,
+                    orderstatus: 'Pending',
+                    ordercost: totalCost,
+                    orderdate: new Date().getTime().toString(),
+                    userpayment: 'COD',
+                    paymenttotal: ''
+                })
+
+                await deleteCart();
+                alert('Order placed successfully.');
+                navigation.navigate('HomeScreen');
+            } catch (error) {
+                console.log('Error placing order:', error);
+                alert('Error placing order. Please try again.');
+            }
+        }
+
+    }
 
     useFocusEffect(
         React.useCallback(() => {
@@ -135,7 +203,7 @@ const UserCartScreen = ({ navigation }) => {
                         <Text style={{ fontSize: 18, fontWeight: '600', paddingVertical: 10, paddingHorizontal: 15 }}>Payment Options</Text>
 
 
-                        <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20,marginHorizontal: 10 }} onPress={() => { alert('Selected') }}>
+                        <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20, marginHorizontal: 10 }} onPress={() => { alert('Selected') }}>
                             <Text style={{ fontSize: 17, fontWeight: '500', color: 'white' }}>Cash on Delivery</Text>
                         </TouchableOpacity>
                     </View>
@@ -143,7 +211,7 @@ const UserCartScreen = ({ navigation }) => {
                     <View style={{ paddingBottom: 30 }}>
                         <Text style={{ fontSize: 18, fontWeight: '600', paddingVertical: 10, paddingHorizontal: 15 }}>Delivery Location</Text>
 
-                        <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20 ,marginHorizontal: 10}} onPress={() => { alert('Selected') }}>
+                        <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20, marginHorizontal: 10 }} onPress={() => { alert('Selected') }}>
                             <Text style={{ fontSize: 17, fontWeight: '500', color: 'white' }}>Current Location</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20, marginHorizontal: 10, marginTop: 10 }} onPress={() => { alert('Selected') }}>
@@ -154,7 +222,7 @@ const UserCartScreen = ({ navigation }) => {
                     <View style={{ paddingTop: 10, borderTopWidth: 1, borderColor: '#c9c9c9' }}>
 
 
-                    <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20, marginHorizontal: 10, marginTop: 10 }} onPress={() => { alert('Selected') }}>
+                        <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20, marginHorizontal: 10, marginTop: 10, alignItems: 'center' }} onPress={() => PlaceNow() }>
                             <Text style={{ fontSize: 17, fontWeight: '500', color: 'white' }}>Place Order</Text>
                         </TouchableOpacity>
                     </View>
