@@ -164,6 +164,7 @@ const UserCartScreen = ({ navigation }) => {
                     orderstatus: 'Pending',
                     ordercost: totalCost,
                     orderdate: new Date().getTime().toString(),
+                    userid: userloggeduid,
                     userpayment: 'COD',
                     paymenttotal: ''
                 })

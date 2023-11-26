@@ -1,7 +1,60 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { firebase } from '../Firebase/FirebaseConfig'
+import { AuthContext } from '../Context/AuthContext'
+import TrackOrderItems from '../Components/TrackOrderItems'
 
-const TrackOrderScreen = () => {
+
+const TrackOrderScreen = ({navigation}) => {
+  const { userloggeduid, } = useContext(AuthContext);
+
+  const [orders, setOrders] = useState([])
+  const [foodData, setFoodData] = useState([]);
+  const [foodDataAll, setFoodDataAll] = useState([]);
+
+
+
+  const getorders = async () => {
+    const ordersRef = firebase.firestore().collection('UserOrders').where('userid', '==', userloggeduid);
+
+    ordersRef.onSnapshot(snapshot => {
+      setOrders(snapshot.docs.map(doc => doc.data()))
+    })
+  }
+  useEffect(() => {
+    getorders()
+  }, [])
+
+  useEffect(() => {
+    // Fetch data from Firebase
+    const fetchData = async () => {
+      const foodRef = firebase.firestore().collection('OrderItems');
+
+      foodRef.onSnapshot(snapshot => {
+        setFoodData(snapshot.docs.map(doc => doc.data().cartItems))
+      }
+      )
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    // Fetch data from Firebase
+    const fetchData = async () => {
+      const foodRef = firebase.firestore().collection('FoodData');
+
+      foodRef.onSnapshot(snapshot => {
+        setFoodDataAll(snapshot.docs.map(doc => doc.data()))
+      }
+      )
+    };
+
+    fetchData();
+  }, []);
+
+
+  // console.log(' yha par dikat hai,', orders)
   return (
     <View style={styles.container}>
       <View style={{ backgroundColor: '#FF3F00', paddingVertical: 15, paddingHorizontal: 15, marginTop: 30 }}>
@@ -13,12 +66,26 @@ const TrackOrderScreen = () => {
 
 
       <ScrollView>
-        <Text style={styles.mainHeading}>My Orders</Text>
+        <Text style={styles.mainHeading}>My Orders1</Text>
         <View style={styles.mainContainer}>
-          <Text style={styles.orderId}>Order id : 4455545ad</Text>
-          <Text style={styles.orderTime}>Time : 4:10 AM</Text>
+          {
+            orders.map((order, index) => {
+              return (
+                <View key={index}>
+                  <Text style={styles.orderId}>Order id : {(order.orderid).substring(0, 15)}</Text>
+                  <Text style={styles.orderTime}>Time : 4:10 AM </Text>
 
-          <View style={styles.orderItemContainer}>
+                  <TrackOrderItems foodDataAll={foodDataAll} data={order.orderid} navigation={navigation} />
+                  {/* Yha use karenge component ko */}
+                  <Text style={styles.orderTotal}>Total : ${order.ordercost}</Text>
+                </View>
+              )
+            })
+
+          }
+
+
+          {/* <View style={styles.orderItemContainer}>
             <View>
               <Image source={require('../Images/pizza1.jpg')} style={styles.cardimage} />
             </View>
@@ -31,9 +98,9 @@ const TrackOrderScreen = () => {
 
               </View>
             </View>
-          </View>
+          </View> */}
 
-          <View style={styles.orderItemContainer}>
+          {/* <View style={styles.orderItemContainer}>
             <View>
               <Image source={require('../Images/pizza2.jpg')} style={styles.cardimage} />
             </View>
@@ -61,9 +128,9 @@ const TrackOrderScreen = () => {
 
               </View>
             </View>
-          </View>
+          </View> */}
 
-          <Text style={styles.orderTotal}>Total : 300$</Text>
+
 
 
 
@@ -129,18 +196,18 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderTopLeftRadius: 20
   },
-  orderItemContainer_2 :{
+  orderItemContainer_2: {
     paddingHorizontal: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    
+
   },
-  orderItemName :{
+  orderItemName: {
     fontSize: 16,
     fontWeight: '600'
   },
-  orderItemPrice :{
-    
+  orderItemPrice: {
+
   }
 
 })
