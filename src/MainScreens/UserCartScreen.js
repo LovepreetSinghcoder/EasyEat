@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image, FlatList, ScrollView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Image, FlatList, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../Context/AuthContext'
 import { firebase } from '../Firebase/FirebaseConfig'
@@ -14,7 +14,7 @@ const UserCartScreen = ({ navigation }) => {
     const [totalCost, setTotalCost] = useState('0')
     const [deliveryCharges, setDeliveryCharges] = useState('0')
 
-
+    const [paymentpage, setPaymentPage] = useState(false)
 
 
 
@@ -43,49 +43,49 @@ const UserCartScreen = ({ navigation }) => {
         cardDataHandler()
     }, [])
 
-    
+
     const FoodDataHandler = async () => {
 
-        
+
         const foodRef = firebase.firestore().collection('FoodData');
-        
+
         foodRef.onSnapshot(snapshot => {
             setFoodDataAll(snapshot.docs.map(doc => doc.data()))
         }
         )
-        
+
     }
 
     useEffect(() => {
         FoodDataHandler()
     }, [])
-    
+
     const TotalPriceHandler = () => {
         if (cartdata !== null && Object.keys(cartdata).length !== 0) {
-            
+
             const cartDataforTotalPrice = cartAlldata;
             let totalfoodprice = 0;
-            
+
             // const foodprice = cartDataforTotalPrice.cartItems
             cartDataforTotalPrice.forEach((item) => {
                 totalfoodprice += (parseInt(item.totalFoodPrice))
             })
-            
+
             setItemCost(totalfoodprice.toString())
             setTotalCost(totalfoodprice.toString())
-            
+
         }
     }
-    
+
     useEffect(() => {
         TotalPriceHandler()
     }, [cartAlldata])
-    
+
     const DeleteButtonhandler = async (item) => {
-        
+
         console.log('ye hai 1')
         const docref = firebase.firestore().collection('UserCart').doc(userloggeduid);
-        
+
         const docSnapshot = await docref.get();
         const cartData = docSnapshot.data();
 
@@ -94,23 +94,23 @@ const UserCartScreen = ({ navigation }) => {
                 cartItems: firebase.firestore.FieldValue.delete()
             })
             console.log('ye hai 2')
-            
+
         }
         else {
             await docref.update({
                 cartItems: firebase.firestore.FieldValue.arrayRemove(item)
             })
             console.log('ye hai 3')
-            
+
         }
         cardDataHandler()
-        
-        
+
+
     }
-    
-    
-    console.log('Ye hai Data braso', ItemCost, totalCost, )
-    
+
+
+    console.log('Ye hai Data braso', ItemCost, totalCost,)
+
     useFocusEffect(
         React.useCallback(() => {
             cardDataHandler();
@@ -118,11 +118,56 @@ const UserCartScreen = ({ navigation }) => {
             console.log('triggered cart')
         }, [])
     );
+
+    if (paymentpage === true) {
+        return (
+            <View style={styles.mainContainer}>
+                <View style={{ backgroundColor: '#FF3F00', paddingVertical: 15, paddingHorizontal: 15, marginTop: 30 }}>
+
+                    <TouchableOpacity>
+                        <Text style={{ fontSize: 16, color: 'white' }}>Close</Text>
+                    </TouchableOpacity>
+
+                </View>
+                <View style={styles.container}>
+
+                    <View>
+                        <Text style={{ fontSize: 18, fontWeight: '600', paddingVertical: 10, paddingHorizontal: 15 }}>Payment Options</Text>
+
+
+                        <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20,marginHorizontal: 10 }} onPress={() => { alert('Selected') }}>
+                            <Text style={{ fontSize: 17, fontWeight: '500', color: 'white' }}>Cash on Delivery</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{ paddingBottom: 30 }}>
+                        <Text style={{ fontSize: 18, fontWeight: '600', paddingVertical: 10, paddingHorizontal: 15 }}>Delivery Location</Text>
+
+                        <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20 ,marginHorizontal: 10}} onPress={() => { alert('Selected') }}>
+                            <Text style={{ fontSize: 17, fontWeight: '500', color: 'white' }}>Current Location</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20, marginHorizontal: 10, marginTop: 10 }} onPress={() => { alert('Selected') }}>
+                            <Text style={{ fontSize: 17, fontWeight: '500', color: 'white' }}>Change Location</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{ paddingTop: 10, borderTopWidth: 1, borderColor: '#c9c9c9' }}>
+
+
+                    <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20, marginHorizontal: 10, marginTop: 10 }} onPress={() => { alert('Selected') }}>
+                            <Text style={{ fontSize: 17, fontWeight: '500', color: 'white' }}>Place Order</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     return (
         <View style={styles.mainContainer}>
             <View style={{ backgroundColor: '#FF3F00', paddingVertical: 15, paddingHorizontal: 15, marginTop: 30 }}>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => { navigation.navigate('HomeScreen') }}>
                     <Text style={{ fontSize: 16, color: 'white' }}>Close</Text>
                 </TouchableOpacity>
 
@@ -220,8 +265,8 @@ const UserCartScreen = ({ navigation }) => {
                                     <Text style={{ fontSize: 20, fontWeight: '600' }}>Total:</Text>
                                     <Text style={{ fontSize: 20, fontWeight: '600', paddingLeft: 5 }}>{totalCost}₹</Text>
                                 </View>
-                                <TouchableOpacity style={{backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20}}>
-                                    <Text style={{fontSize: 17, fontWeight: '500', color: 'white'}}>Place Order</Text>
+                                <TouchableOpacity style={{ backgroundColor: '#FF3F00', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20 }} onPress={() => setPaymentPage(true)}>
+                                    <Text style={{ fontSize: 17, fontWeight: '500', color: 'white' }}>Place Order</Text>
                                 </TouchableOpacity>
 
                             </View>
