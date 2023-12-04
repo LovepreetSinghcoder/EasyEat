@@ -7,6 +7,7 @@ import Categories from '../Components/Categories';
 import OfferSlider from '../Components/OfferSlider';
 import CardSlider from '../Components/CardSlider';
 import { firebase } from '../Firebase/FirebaseConfig'
+import * as Location from 'expo-location';
 
 const HomeScreen = ({ navigation }) => {
 
@@ -22,6 +23,63 @@ const HomeScreen = ({ navigation }) => {
     }, [])
 
     // console.log('ye hai food Data', foodData)
+
+
+    const requestLocationPermission = async () => {
+       
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            console.log('Permission to access location was denied');
+            return;
+        }
+        // Permission granted, continue with obtaining the location
+        getLocation()
+
+    };
+
+    useEffect(() => {
+        requestLocationPermission()
+    },[])
+
+    const getLocation = async () => {
+        try {
+          const location = await Location.getCurrentPositionAsync({});
+          const { latitude, longitude } = location.coords;
+          console.log('Latitude:', latitude);
+          console.log('Longitude:', longitude);
+     
+          console.log('This is the real name of the location,', getLocationName(latitude,longitude) )
+
+          // Do something with the latitude and longitude values
+        } catch (error) {
+          console.log('Error getting location:', error);
+        }
+      };
+
+
+
+      const getLocationName = async (latitude, longitude) => {
+        try {
+          const geocode = await Location.reverseGeocodeAsync({
+            latitude,
+            longitude
+          });
+    
+          if (geocode.length > 0) {
+            const { city, country } = geocode[0];
+            const locationName = `${city}, ${country}`;
+            console.log('dekh veere', city)
+            // setLocationName(city);
+          
+            return locationName;
+          }
+        } catch (error) {
+          console.log('Error fetching location name:', error);
+        }
+    
+        return null;
+      };
+
     return (
         <View style={styles.mainContainer}>
             <StatusBar backgroundColor={'#FF3F00'} />
@@ -38,7 +96,7 @@ const HomeScreen = ({ navigation }) => {
 
 
 
-            <CardSlider navigation={navigation} data={foodData}/>
+            <CardSlider navigation={navigation} data={foodData} />
 
         </View>
     )
